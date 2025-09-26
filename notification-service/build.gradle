@@ -1,7 +1,8 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.4.2'
-    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.springframework.boot' version '3.4.0'
+    id 'io.spring.dependency-management' version'1.1.6'
+    id 'com.github.davidmc24.gradle.plugin.avro' version '1.9.1'
 }
 
 group = 'uz.example.microservice'
@@ -21,12 +22,12 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven { url "https://packages.confluent.io/maven/" }
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
-    implementation 'org.springframework.kafka:spring-kafka'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.kafka:spring-kafka'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -35,7 +36,23 @@ dependencies {
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:kafka'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'io.confluent:kafka-avro-serializer:7.5.0'
+    implementation 'org.apache.avro:avro:1.11.3'
 
+    implementation 'com.github.loki4j:loki-logback-appender:1.3.2'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+    implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs += ["$buildDir/generated-main-avro-java"]
+        }
+    }
 }
 
 tasks.named('test') {

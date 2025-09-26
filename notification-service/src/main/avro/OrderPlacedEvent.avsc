@@ -1,0 +1,9 @@
+{
+  "type": "record",
+  "name": "OrderPlacedEvent",
+  "namespace": "uz.example.microservice.orderservice.event",
+  "fields": [
+    { "name": "orderNumber", "type": "string" },
+    { "name": "email", "type": "string" }
+  ]
+}
